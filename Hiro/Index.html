@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/ar.js@1.7.2/aframe/build/aframe-ar.min.js"></script>
+</head>
+<body style="margin: 0; overflow: hidden;">
+  <a-scene embedded arjs>
+    <a-marker preset="hiro">
+      <a-entity id="dynamicObject" position="0 0 0"></a-entity>
+    </a-marker>
+    <a-entity camera></a-entity>
+  </a-scene>
+
+  <script>
+    const object = document.getElementById("dynamicObject");
+    let currentIndex = 0;
+
+    const models = [
+      { primitive: "box", color: "red", scale: "1 1 1" },
+      { primitive: "sphere", color: "blue", scale: "1 1 1" },
+      { primitive: "cone", color: "green", scale: "1 1 1" }
+    ];
+
+    function changeModel() {
+      const model = models[currentIndex];
+      object.setAttribute("geometry", `primitive: ${model.primitive}`);
+      object.setAttribute("material", `color: ${model.color}`);
+      object.setAttribute("scale", model.scale);
+      currentIndex = (currentIndex + 1) % models.length; // Wissel door lijst heen
+    }
+
+    document.querySelector("a-marker").addEventListener("markerFound", () => {
+      changeModel();
+    });
+  </script>
+</body>
+</html>
+
